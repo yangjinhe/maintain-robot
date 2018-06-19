@@ -13,11 +13,12 @@ import java.util.Map;
  * @Author yangjh5
  * @CreateDate 2017/12/2
  */
-public class CqpHttpApi implements CqpApi {
+public class CqpHttpApi extends AbstractCqpApi {
 
     private static CqpHttpApi instance = new CqpHttpApi();
 
-    private CqpHttpApi(){}
+    private CqpHttpApi() {
+    }
 
     public static CqpHttpApi getInstance() {
         return instance;
@@ -32,11 +33,7 @@ public class CqpHttpApi implements CqpApi {
      */
     @Override
     public CqpHttpApiResp sendPrivateMsg(long qq, String message) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("user_id", qq);
-        map.put("message", message);
-        String resp = HttpUtil.post(HTTP_SERVER_HOST + SEND_PRIVATE_MSG, map, timeOut);
-        return JsonUtils.toObject(resp, CqpHttpApiResp.class);
+        return sendMsg(SEND_PRIVATE_MSG, buildPrivateMsg(qq, message));
     }
 
     /**
@@ -48,11 +45,7 @@ public class CqpHttpApi implements CqpApi {
      */
     @Override
     public CqpHttpApiResp sendGroupMsg(long groupId, String message) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("group_id", groupId);
-        map.put("message", message);
-        String resp = HttpUtil.post(HTTP_SERVER_HOST + SEND_GROUP_MSG, map, timeOut);
-        return JsonUtils.toObject(resp, CqpHttpApiResp.class);
+        return sendMsg(SEND_GROUP_MSG, buildGroupMsg(groupId, message));
     }
 
     /**
@@ -64,11 +57,7 @@ public class CqpHttpApi implements CqpApi {
      */
     @Override
     public CqpHttpApiResp sendDisCussMsg(long groupId, String message) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("discuss_id", groupId);
-        map.put("message", message);
-        String resp = HttpUtil.post(HTTP_SERVER_HOST + SEND_DISCUSS_MSG, map, timeOut);
-        return JsonUtils.toObject(resp, CqpHttpApiResp.class);
+        return sendMsg(SEND_DISCUSS_MSG, buildDisCussMsg(groupId, message));
     }
 
     /**
@@ -236,8 +225,7 @@ public class CqpHttpApi implements CqpApi {
      */
     @Override
     public CqpHttpApiResp getVersionInfo() {
-        String resp = HttpUtil.get(HTTP_SERVER_HOST + GET_VERSION_INFO, timeOut);
-        return JsonUtils.toObject(resp, CqpHttpApiResp.class);
+        return sendMsg(GET_VERSION_INFO);
     }
 
     /**
@@ -247,8 +235,7 @@ public class CqpHttpApi implements CqpApi {
      */
     @Override
     public CqpHttpApiResp setRestart() {
-        String resp = HttpUtil.get(HTTP_SERVER_HOST + SET_RESTART, timeOut);
-        return JsonUtils.toObject(resp, CqpHttpApiResp.class);
+        return sendMsg(SET_RESTART);
     }
 
     /**
@@ -258,7 +245,18 @@ public class CqpHttpApi implements CqpApi {
      */
     @Override
     public CqpHttpApiResp setRestartPlugin() {
-        String resp = HttpUtil.get(HTTP_SERVER_HOST + SET_RESTART_PLUGIN, timeOut);
+        return sendMsg(SET_RESTART_PLUGIN);
+    }
+
+    private CqpHttpApiResp sendMsg(String msgType) {
+        String resp = HttpUtil.get(HTTP_SERVER_HOST + msgType, timeOut);
         return JsonUtils.toObject(resp, CqpHttpApiResp.class);
     }
+
+    private CqpHttpApiResp sendMsg(String msgType, Map<String, Object> msg) {
+        String resp = HttpUtil.post(HTTP_SERVER_HOST + GET_GROUP_MEMBER_LIST, msg, timeOut);
+        return JsonUtils.toObject(resp, CqpHttpApiResp.class);
+    }
+
+
 }

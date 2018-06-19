@@ -1,5 +1,8 @@
 package com.yjh.util;
 
+import com.xiaoleilu.hutool.lang.Singleton;
+import com.yjh.actuator.BaseActuator;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.CharArrayWriter;
@@ -37,5 +40,13 @@ public class MyUtil {
             data.write(buf, 0, ret);
         }
         return data.toString();
+    }
+
+    public static BaseActuator getClassByCmd(String cmd) {
+        MessageActuatorEnum actuatorEnum = MessageActuatorEnum.getClasszByCmd(cmd);
+        if (null != actuatorEnum) {
+            return Singleton.get(actuatorEnum.getClassz());
+        }
+        return null;
     }
 }

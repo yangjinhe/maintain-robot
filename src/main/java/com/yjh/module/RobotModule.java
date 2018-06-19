@@ -1,15 +1,19 @@
 package com.yjh.module;
 
+import com.xiaoleilu.hutool.lang.Singleton;
+import com.yjh.actuator.BaseActuator;
+import com.yjh.actuator.RedisActuator;
+import com.yjh.util.MessageActuatorEnum;
 import com.yjh.util.MyUtil;
 import com.yjh.vo.CqpPostMsg;
 import com.yjh.vo.CqpRespDiscussMsg;
 import com.yjh.vo.CqpRespGroupMsg;
 import com.yjh.vo.CqpRespPrivMsg;
+import com.yjh.vo.MsgBody;
 import lombok.extern.slf4j.Slf4j;
 import org.nutz.mvc.adaptor.JsonAdaptor;
 import org.nutz.mvc.annotation.AdaptBy;
 import org.nutz.mvc.annotation.At;
-import org.nutz.mvc.annotation.Ok;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -49,19 +53,24 @@ public class RobotModule {
     }
 
     private Object processMessage(CqpPostMsg cqpPostMsg) {
-        String message = cqpPostMsg.getMessage();
+        MsgBody msgBody = cqpPostMsg.getMessageBody();
         switch (cqpPostMsg.getMessage_type()) {
             case "private":
                 CqpRespPrivMsg privMsg = new CqpRespPrivMsg();
-                privMsg.setReply(message);
+                BaseActuator actuator = MyUtil.getClassByCmd(msgBody.getCommand());
+                if (null != actuator) {
+                    privMsg.setReply(actuator.run(msgBody.getBody()));
+                } else {
+                    privMsg.setReply(msgBody.getBody());
+                }
                 return privMsg;
             case "group":
                 CqpRespGroupMsg groupMsg = new CqpRespGroupMsg();
-                groupMsg.setReply(message);
+                groupMsg.setReply(msgBody.getBody());
                 return groupMsg;
             case "discuss":
                 CqpRespDiscussMsg discussMsg = new CqpRespDiscussMsg();
-                discussMsg.setReply(message);
+                discussMsg.setReply(msgBody.getBody());
                 return discussMsg;
             default:
                 return "";

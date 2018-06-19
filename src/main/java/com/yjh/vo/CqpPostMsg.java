@@ -88,6 +88,14 @@ public class CqpPostMsg {
 
     private String flag;
 
+    public MsgBody getMessageBody() {
+        int idx = message.indexOf(" ");
+        MsgBody body = new MsgBody();
+        body.setCommand(message.substring(0, idx));
+        body.setBody(message.substring(idx, message.length()).trim());
+        return body;
+    }
+
     @Override
     public String toString() {
         return JsonUtils.toJson(this);

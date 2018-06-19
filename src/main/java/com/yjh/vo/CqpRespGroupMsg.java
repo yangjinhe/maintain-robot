@@ -1,5 +1,7 @@
 package com.yjh.vo;
 
+import lombok.Data;
+
 /**
  * @Description
  * @ProjectName maintain-robot
@@ -7,6 +9,7 @@ package com.yjh.vo;
  * @Author yangjh5
  * @CreateDate 2017/11/30
  */
+@Data
 public class CqpRespGroupMsg extends CqpRespDiscussMsg {
 
     // 撤回
@@ -18,27 +21,4 @@ public class CqpRespGroupMsg extends CqpRespDiscussMsg {
     // 把发送者禁言
     private Boolean ban;
 
-    public Boolean getDelete() {
-        return delete;
-    }
-
-    public void setDelete(Boolean delete) {
-        this.delete = delete;
-    }
-
-    public Boolean getKick() {
-        return kick;
-    }
-
-    public void setKick(Boolean kick) {
-        this.kick = kick;
-    }
-
-    public Boolean getBan() {
-        return ban;
-    }
-
-    public void setBan(Boolean ban) {
-        this.ban = ban;
-    }
 }

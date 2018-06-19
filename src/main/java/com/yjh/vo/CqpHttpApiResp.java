@@ -1,5 +1,7 @@
 package com.yjh.vo;
 
+import lombok.Data;
+
 import java.util.Map;
 
 /**
@@ -9,6 +11,7 @@ import java.util.Map;
  * @Author yangjh5
  * @CreateDate 2017/12/2
  */
+@Data
 public class CqpHttpApiResp {
 
     private int retcode;
@@ -17,27 +20,4 @@ public class CqpHttpApiResp {
 
     private Map<String, Object> data;
 
-    public int getRetcode() {
-        return retcode;
-    }
-
-    public void setRetcode(int retcode) {
-        this.retcode = retcode;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Map<String, Object> getData() {
-        return data;
-    }
-
-    public void setData(Map<String, Object> data) {
-        this.data = data;
-    }
 }

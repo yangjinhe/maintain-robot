@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * @Description 插件配置的地址是 ws://ip:port/robot/ws_api/cqp
+ * @Description 插件配置的地址是 ws_reverse_api_url=ws://ip:port/robot/ws_api/cqp
  * @ProjectName maintain-robot
  * @Package com.yjh.module
  * @Author yangjh5

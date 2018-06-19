@@ -9,7 +9,7 @@ import com.yjh.vo.CqpHttpApiResp;
  * @Author yangjh5
  * @CreateDate 2017/12/2
  */
-interface CqpApi {
+public interface CqpApi {
 
     String HTTP_SERVER_HOST = "http://127.0.0.1:5700/";
     String SEND_PRIVATE_MSG = "send_private_msg";

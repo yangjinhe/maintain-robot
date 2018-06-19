@@ -6,6 +6,7 @@ import org.nutz.lang.util.NutMap;
 
 import javax.websocket.Session;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * @Description
@@ -14,7 +15,7 @@ import java.io.IOException;
  * @Author yangjh5
  * @CreateDate 2017/12/2
  */
-public class CqpWebsocketApi implements CqpApi {
+public class CqpWebsocketApi extends AbstractCqpApi {
 
     private static CqpWebsocketApi instance = new CqpWebsocketApi();
 
@@ -26,105 +27,27 @@ public class CqpWebsocketApi implements CqpApi {
 
     @Override
     public CqpHttpApiResp sendPrivateMsg(long qq, String message) {
-        NutMap nutMap = new NutMap("action", SEND_PRIVATE_MSG)
-                .setv("params", new NutMap("user_id", qq)
-                        .setv("message", message)
-                );
-        sendMsg(JsonUtils.toJson(nutMap));
+        sendMsg(buildPrivateMsg(qq, message));
         return null;
     }
 
     @Override
     public CqpHttpApiResp sendGroupMsg(long groupId, String message) {
-        NutMap nutMap = new NutMap("action", SEND_GROUP_MSG)
-                .setv("params", new NutMap("group_id", groupId)
-                        .setv("message", message)
-                );
-        sendMsg(JsonUtils.toJson(nutMap));
+        sendMsg(buildGroupMsg(groupId, message));
         return null;
     }
 
     @Override
     public CqpHttpApiResp sendDisCussMsg(long groupId, String message) {
-        NutMap nutMap = new NutMap("action", SEND_DISCUSS_MSG)
-                .setv("params", new NutMap("discuss_id", groupId)
-                        .setv("message", message)
-                );
-        sendMsg(JsonUtils.toJson(nutMap));
+        sendMsg(buildDisCussMsg(groupId, message));
         return null;
     }
 
-    // 以下内容，我懒，就不实现了
-    @Override
-    public CqpHttpApiResp deleteMsg(long messageId) {
-        return null;
-    }
-
-    @Override
-    public CqpHttpApiResp sendLike(long qq, long times) {
-        return null;
-    }
-
-    @Override
-    public CqpHttpApiResp setGroupKick(long qq, long groupId) {
-        return null;
-    }
-
-    @Override
-    public CqpHttpApiResp setGroupBan(long qq, long groupId, long duration) {
-        return null;
-    }
-
-    @Override
-    public CqpHttpApiResp setGroupAnonymousBan(String flag, long groupId, long duration) {
-        return null;
-    }
-
-    @Override
-    public CqpHttpApiResp setGroupWholeBan(long groupId, boolean enable) {
-        return null;
-    }
-
-    @Override
-    public CqpHttpApiResp setGroupAdmin(long groupId, long qq, boolean enable) {
-        return null;
-    }
-
-    @Override
-    public CqpHttpApiResp getGroupList() {
-        return null;
-    }
-
-    @Override
-    public CqpHttpApiResp getGroupMemberInfo(long groupId, long qq) {
-        return null;
-    }
-
-    @Override
-    public CqpHttpApiResp getGroupMemberList(long groupId) {
-        return null;
-    }
-
-    @Override
-    public CqpHttpApiResp getVersionInfo() {
-        return null;
-    }
-
-    @Override
-    public CqpHttpApiResp setRestart() {
-        return null;
-    }
-
-    @Override
-    public CqpHttpApiResp setRestartPlugin() {
-        return null;
-    }
-
-    private static void sendMsg(String msg) {
+    private static void sendMsg(Map msg) {
         Session session = WebSocketModule.sessionMap.get(WebSocketModule.CQP_USER);
         if (null != session) {
             try {
-                session.getBasicRemote().sendText(msg);
+                session.getBasicRemote().sendText(JsonUtils.toJson(msg));
             } catch (IOException e) {
                 e.printStackTrace();
             }

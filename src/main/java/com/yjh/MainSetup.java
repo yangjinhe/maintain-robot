@@ -11,7 +11,7 @@ public class MainSetup implements Setup {
     @Override
     public void init(NutConfig nc) {
         Ioc ioc = nc.getIoc();
-        ioc.get(NutQuartzCronJobFactory.class);
+        //ioc.get(NutQuartzCronJobFactory.class);
         Dao dao = ioc.get(Dao.class);
         Daos.createTablesInPackage(dao, "com.yjh", false);
     }

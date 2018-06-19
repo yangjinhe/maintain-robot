@@ -20,6 +20,6 @@ public class TestJob implements Job {
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        CqpWebsocketApi.getInstance().sendPrivateMsg(1846253361, "定时消息");
+        //CqpWebsocketApi.getInstance().sendPrivateMsg(1846253361, "定时消息");
     }
 }
